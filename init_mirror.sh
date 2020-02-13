@@ -35,6 +35,7 @@ master() {
 rm -rf $BACKUP_FOLDER/IRIS.DAT
 iris session $ISC_PACKAGE_INSTANCENAME -U %SYS <<- END
 set mirror("UseSSL") = 0
+set mirror("ArbiterNode") = "$1|2188"
 set sc = ##class(SYS.Mirror).CreateNewMirrorSet("${MIRROR_NAME}", "master", .mirror)
 if 'sc do \$system.OBJ.DisplayError(sc) quit
 hang 2
@@ -46,10 +47,9 @@ END
 }
 
 restore_backup() {
-while [ ! -f $BACKUP_FOLDER/IRIS.DAT ]
-do
-  sleep 2
-done
+sleep 5
+while [ ! -f $BACKUP_FOLDER/IRIS.DAT ]; do sleep 1; done
+sleep 2
 iris session $ISC_PACKAGE_INSTANCENAME -U %SYS "##class(SYS.Database).DismountDatabase(\"${DATABASE}\")"
 cp $BACKUP_FOLDER/IRIS.DAT $DATABASE/IRIS.DAT
 md5sum $DATABASE/IRIS.DAT
@@ -63,12 +63,15 @@ if 'sc do \$system.OBJ.DisplayError(sc)
 hang 2
 set sc = ##class(SYS.Mirror).ActivateMirroredDatabase("${DATABASE}")
 if 'sc do \$system.OBJ.DisplayError(sc)
+hang 2
+set sc = ##class(SYS.Mirror).CatchupDB(\$lb(+\$zu(49, "${DATABASE}")))
+if 'sc do \$system.OBJ.DisplayError(sc)
 halt
 END
 }
 
 if [ "$IRIS_MIRROR_ROLE" == "master" ]; then 
-  master
+  master $IRIS_MIRROR_ARBITER
   make_backup
 else 
   restore_backup

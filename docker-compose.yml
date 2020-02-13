@@ -1,14 +1,14 @@
 version: '3.7'
 
 services:
-  # arbiter:
-  #   image: intersystems/arbiter:2019.3.0.302.0
-  #   init: true
-  #   command: 
-  #     - /etc/init.d/ISCAgent start
-  #   networks:
-  #     app_net:
-  #       ipv4_address: 172.16.238.10
+  arbiter:
+    image: intersystems/arbiter:2019.4.0.383.0
+    init: true
+    command: 
+      - /usr/local/etc/irissys/startISCAgent.sh 2188
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.10
 
   master:
     build: .
@@ -19,11 +19,13 @@ services:
         ipv4_address: 172.16.238.20
     environment: 
       - IRIS_MIRROR_ROLE=master
+      - IRIS_MIRROR_ARBITER=172.16.238.10
     ports:
       - 81:52773
     volumes: 
       - ~/iris.key:/usr/irissys/mgr/iris.key
       - ./backup:/opt/backup
+      - ./init_mirror.sh:/init_mirror.sh
 
   backup:
     image: demoapp
@@ -39,6 +41,7 @@ services:
     volumes: 
       - ~/iris.key:/usr/irissys/mgr/iris.key
       - ./backup:/opt/backup
+      - ./init_mirror.sh:/init_mirror.sh
 
 networks:
   app_net:
