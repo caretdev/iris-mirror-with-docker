@@ -1,12 +1,12 @@
 # Example of IRIS with mirroring in docker-compose
 
-Docker compose environment with demo IRIS configured with Mirroring
+Docker compose environment with demo IRIS configured with Mirroring and controlled by arbiter
 
 ## Requirements
 
 - docker
 - docker-compose
-- IRIS image version 2019.3.0.302.0
+- IRIS and arbiter images version 2019.4.0.383.0
 - iris.key in your home directory
 
 ## Usage
