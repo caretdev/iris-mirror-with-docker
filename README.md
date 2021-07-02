@@ -6,7 +6,7 @@ Docker compose environment with demo IRIS configured with Mirroring and controll
 
 - docker
 - docker-compose
-- IRIS and arbiter images version 2019.4.0.383.0
+- IRIS and arbiter images version 2021.1.0.215.0
 - iris.key in your home directory
 
 ## Usage
