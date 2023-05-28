@@ -1,4 +1,5 @@
-FROM containers.intersystems.com/intersystems/iris:2021.1.0.215.0
+# FROM containers.intersystems.com/intersystems/iris:2021.1.0.215.0
+FROM containers.intersystems.com/intersystems/iris:2023.2.0.201.0
 
 USER root
 
