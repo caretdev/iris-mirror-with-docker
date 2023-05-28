@@ -22,7 +22,7 @@ services:
     ports:
       - 81:52773
     volumes: 
-      - ~/iris.key:/usr/irissys/mgr/iris.key
+      - ./iris.key:/usr/irissys/mgr/iris.key
       - ./backup:/opt/backup
       - ./init_mirror.sh:/init_mirror.sh
     hostname: master
@@ -38,7 +38,7 @@ services:
       - IRIS_MIRROR_ROLE=backup
       - IRIS_MIRROR_AGENT=172.16.238.20
     volumes: 
-      - ~/iris.key:/usr/irissys/mgr/iris.key
+      - ./iris.key:/usr/irissys/mgr/iris.key
       - ./backup:/opt/backup
       - ./init_mirror.sh:/init_mirror.sh
     hostname: backup
